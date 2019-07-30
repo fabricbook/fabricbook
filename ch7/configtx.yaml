@@ -1,0 +1,68 @@
+
+#organization相关的配置
+Organizations:
+    - &OrdererOrg   #order节点配置信息
+        Name: OrdererOrg    #order节点名称
+        ID: OrdererMSP      #orderer节点编号，orderer.yaml的 LocalMSPID必须要和这个ID相同
+        #MSP文件夹路径
+        MSPDir: crypto-config/ordererOrganizations/example.com/msp
+    - &Org1
+        Name: Org1MSP   #组织名称
+        ID: Org1MSP     #组织编号
+        MSPDir: crypto-config/peerOrganizations/org1.example.com/msp #组织MSP文件名
+        AnchorPeers:        #组织的锚点信息
+                - Host: peer0.org1.example.com  
+                - Port: 7051
+    - &Org2
+        Name: Org2MSP
+        ID: Org2MSP
+        MSPDir: crypto-config/peerOrganizations/org2.example.com/msp
+        AnchorPeers:
+                - Host: peer0.org2.example.com
+                - Port: 7051
+#orderer节点的配置信息     
+Orderer: &OrdererDefaults
+    #orderer节点的共识方法
+    OrdererType: solo
+    #orderer的监听地址
+    Addresses:
+        - orderer.simple-network.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 98 MB
+        PreferredMaxBytes: 512 KB
+    #kafka相关配置
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+Application: &ApplicationDefaults
+    Organizations:
+
+#以下部分定义了整个系统配置信息
+Profiles: 
+    # TestTwoOrgsOrdererGenesis是组织定义表示符，可以自定义，这个也是命令中的-profile参数对应参数
+    TestTwoOrgsOrdererGenesis:
+        #orderer配置属性，这个标识不能自定义，属于系统关键词
+        Orderer:
+            #这个表示引用下面OrdererDefaults的属性
+            <<: *OrdererDefaults
+            Organizations:
+                    - *OrdererOrg
+        #定义了系统中包含的组织
+        Consortiums:
+            SampleConsortium:
+                #系统中包含的组织
+                Organizations:
+                        - *Org1  #引用下文定义的配置
+                        - *Org2
+    #通道配置信息
+    #通道定义标识符，可以自定义
+    TestTwoOrgsChannel:
+        Consortium: SampleConsortium
+        Application:
+            <<: *ApplicationDefaults  #引用下文的Application定义
+            Organizations:
+                    - *Org1
+                    - *Org2

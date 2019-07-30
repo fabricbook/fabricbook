@@ -1,0 +1,2 @@
+RAMLedger:
+    HistorySize: 1000    # 内存分类帐最大保留的块的数量

@@ -1,0 +1,19 @@
+ledger:
+  blockchain:
+  state: 
+    stateDatabase: goleveldb    # 指定默认的状态数据库
+    couchDBConfig:    # 配置couchDB信息
+       couchDBAddress: 127.0.0.1:5984    # 地址
+       username:
+       password:
+       maxRetries: 3    # 重新尝试CouchDB错误的次数
+       maxRetriesOnStartup: 12      #　启动CouchDB错误的重试次数 
+       requestTimeout: 35s      #　请求超时时间 
+       internalQueryLimit: 1000     #　限制每个查询返回的记录数量  
+       maxBatchUpdateSize: 1000      #　限制每个CouchDB批量更新的记录数量
+       #　值为１时将在每次提交块后进行索引
+       # 增加值可以提高peer和CouchDB的写效率，但是可能会降低查询响应时间
+       warmIndexesAfterNBlocks: 1 
+       createGlobalChangesDB: false   
+  history:    
+    enableHistoryDatabase: true        # 是否开启历史数据库，当合约中需要用到GetHistoryForKey接口时这里必须设置为true

@@ -1,0 +1,3 @@
+FileLedger:
+    Location: /var/hyperledger/production/orderer    # 区块存储路径，该目录下包括chains子目录，存放各个chain的区块，index目录存放索引文件
+    Prefix: hyperledger-fabric-ordererledger    # 该属性标识指定了如果没有设置Location属性则在临时目录下创建账本时目录的名称

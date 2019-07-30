@@ -1,0 +1,8 @@
+Consensus:
+    # 根据不同的共识模式设置不同的, 如Raft协议可设置以下属性
+
+    # WALDir 指定了etcd/raft写前日志存储地址. 
+    WALDir: /var/hyperledger/production/orderer/etcdraft/wal
+
+    # SnapDir 指定了etcd/raft 快照存储地址
+    SnapDir: /var/hyperledger/production/orderer/etcdraft/snapshot

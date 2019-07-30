@@ -1,0 +1,27 @@
+vm:
+    endpoint: unix:///var/run/docker.sock    # Docker Daemon地址
+    docker:    # 设置docker
+        tls:
+            enabled: false
+            ca:
+                file: docker/ca.crt
+            cert:
+                file: docker/tls.crt
+            key:
+                file: docker/tls.key
+        attachStdout: false    # 启用/禁用chaincode容器中的标准输出
+        # 创建docker容器的参数
+        # 使用用于集群的ipam和dns-server可以有效地创建容器设置容器的网络模式
+        # 支持标准值是：“host”(默认)、“bridge”、“ipvlan”、“none”
+        # Dns -供容器使用的Dns服务器列表
+        #注:'Privileged'、'Binds'、'Links'和'PortBindings'属性不支持Docker主机配置，设置后将不使用
+        hostConfig:
+            NetworkMode: host # host意味着chaincode容器直接使用所在主机的网络命名空间
+            Dns:
+               # - 192.168.0.1
+            LogConfig:
+                Type: json-file
+                Config:
+                    max-size: "50m"
+                    max-file: "5"
+            Memory: 2147483648

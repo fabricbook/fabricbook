@@ -1,0 +1,14 @@
+metrics:
+    # 当启用metrics服务器时
+    # 必须使用特定的metrics报告程序类型当前支持的类型:statsd、prometheus、disabled（关闭）
+    provider: disabled
+    # statsd 配置
+    statsd:
+        # tcp or udp
+        network: udp
+        # 要连接的statsd服务器地址
+        address: 127.0.0.1:8125
+        # 确定向statsd服务器推送指标的频率
+        writeInterval: 10s
+        # 前缀，会被添加到所有度量metrics数据上
+        prefix:

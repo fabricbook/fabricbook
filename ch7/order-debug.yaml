@@ -1,0 +1,3 @@
+Debug:
+    BroadcastTraceDir:    # 广播服务的跟踪日志写入到此目录中
+    DeliverTraceDir:    # 分发服务的跟踪日志写入到此目录中

@@ -1,0 +1,37 @@
+Kafka:
+    Retry:    # 无法建立到Kafka集群的连接时的重试请求    
+        ShortInterval: 5s    # 重试时间间隔
+        ShortTotal: 10m        # 重试的总时间
+        LongInterval: 5m    # 重试失败后再次发送重试的时间间隔
+        LongTotal: 12h        # 重试的最长总时间
+        NetworkTimeouts:    # 网络超时设置
+            DialTimeout: 10s
+            ReadTimeout: 10s
+            WriteTimeout: 10s
+        Metadata:    # 请求leader选举时影响元数据的设置
+            RetryBackoff: 250ms    # 指定重试的最大时间
+            RetryMax: 3    # 重试的最大次数
+        Producer:    # 向Kafka集群发送消息失败的设置
+            RetryBackoff: 100ms    # 指定重试的最大时间
+            RetryMax: 3    # 重试的最大次数
+        Consumer:    # 向Kafka集群读取消息失败的设置
+            RetryBackoff: 2s    # 指定重试的最大时间
+    # 设定kafka topic数目,只支持v0.10.1.0及以上版本
+    Topic:
+        # 备份副本数
+        ReplicationFactor: 3
+    Verbose: false    # 是否为与Kafka集群的交互启用日志记录
+    TLS:    # Orderer连接到Kafka集群的TLS设置
+        Enabled: false    # 连接到Kafka集群时是否使用TLS
+        PrivateKey:      
+        Certificate:       
+        RootCAs:
+    # SASLPlain: 基于SALS/Plain认证方式的kafka节点认证，即用户名密码认证
+    SASLPlain:
+        # 是否开启
+        Enabled: false
+        # 用户名
+        User:
+        # 密码
+        Password:
+    Version:    # Kafka版本(未指定默认值为0.10.2.0)

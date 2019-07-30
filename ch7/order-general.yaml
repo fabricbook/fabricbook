@@ -1,0 +1,43 @@
+General:
+    LedgerType: file    # 指定账本类型（可选file、RAM、json三种）
+    ListenAddress: 127.0.0.1    # 监听地址
+    ListenPort: 7050    # 监听端口号
+    TLS:    # GRPC服务器的TLS设置
+        Enabled: false    # 默认不启用
+        PrivateKey: tls/server.key    # 签名的私钥文件
+        Certificate: tls/server.crt    # 证书文件
+        RootCAs:    # 可信任的根CA证书
+          - tls/ca.crt
+        ClientAuthRequired: false
+        ClientRootCAs:
+    Keepalive:    # GRPC服务器配置
+        ServerMinInterval: 60s    # 客户机ping之间的最小允许时间
+        ServerInterval: 7200s    # 连接到客户机的ping之间的时间
+        ServerTimeout: 20s    # 服务器等待响应的超时时间
+    # orderer服务集群设置，为了各个orderer可以互相链接（比如Raft共识模式下的orderer）
+    Cluster:
+        SendBufferSize: 10
+        ClientCertificate:
+        ClientPrivateKey:
+        # 以下4个属性务必一起设置或者不设置
+        ListenPort:
+        ListenAddress:
+        ServerCertificate:
+        ServerPrivateKey:
+    GenesisMethod: provisional    # 生成初始区块的提供方式（可选provisional、file两种）
+    GenesisProfile: SampleInsecureSolo    # 用于动态生成初始区块的概要
+    GenesisFile: genesisblock    # 生成初始区块的配置文件 
+    LocalMSPDir: msp    # MSP目录 
+    LocalMSPID: SampleOrg    # MSP ID
+    Profile:    # 是否为Go“profiling”配置启用HTTP服务
+        Enabled: false
+        Address: 0.0.0.0:6060
+    BCCSP:    # 加密机制，可以为sw或者pkcs11等，具体可看fabric源代码中bccsp内容
+        Default: SW    # 默认使用SW
+        SW:
+            Hash: SHA2
+            Security: 256
+            FileKeyStore:
+                KeyStore:
+    Authentication:    # 与身份验证相关的配置
+        TimeWindow: 15m    # 当前服务器时间与客户端请求消息中指定的客户端时间差异

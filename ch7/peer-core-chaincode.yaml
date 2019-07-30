@@ -1,0 +1,36 @@
+chaincode:
+    id:    #动态标记链码的信息，该信息会以标签形式写到链码容器
+        path:
+        name:
+    # 通用的合约编译环境，适用于大多数chaincode类型
+    builder: $(DOCKER_NS)/fabric-ccenv:latest
+    # 在用户链码实例化过程中启用/禁用基本docker镜像的拉取
+    pull: false
+    golang:    # golang类型chaincode的基础镜像
+        runtime: $(BASE_DOCKER_NS)/fabric-baseos:$(ARCH)-$(BASE_VERSION)
+        dynamicLink: false    # 是否动态链接golang链码
+    car:
+        #　car类型chaincode的基础镜像
+        runtime: $(BASE_DOCKER_NS)/fabric-baseos:$(ARCH)-$(BASE_VERSION)
+    java:
+        # 用于Java链代码运行时，基于java编译器的镜像
+        Dockerfile:  |
+            from $(DOCKER_NS)/fabric-javaenv:$(ARCH)-1.1.0
+    node:  
+        # js引擎在运行时，指定的基础镜像
+        runtime: $(BASE_DOCKER_NS)/fabric-baseimage:$(ARCH)-$(BASE_VERSION)
+    startuptimeout: 300s    # chaincode启动超时时间
+    executetimeout: 30s        #Invoke和Init调用的超时时间
+    mode: net    # 链码执行模式（dev、net两种）
+    keepalive: 0    # Peer和链码之间的心跳超时，值小于或等于0会关闭
+    system:    # 系统链码白名单
+        cscc: enable
+        lscc: enable
+        escc: enable
+        vscc: enable
+        qscc: enable
+    systemPlugins:    # 系统chaincode插件:
+    logging:   # chaincode容器的日志相关配置  
+      level:  info
+      shim:   warning
+      format: '%{color}%{time:2006-01-02 15:04:05.000 MST} [%{module}] %{shortfunc} -> %{level:.4s} %{id:03x}%{color:reset} %{message}'
